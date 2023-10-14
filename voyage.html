@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+
+    <title></title>
+
+    <link href="https://fonts.googleapis.com/css?family=Faster+One" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+
+      <header>
+<style>
+html, body {
+ margin: 0;
+ padding: 0;
+ }
+body {
+ background-color: white; 
+ font-family: Verdana, sans-serif; 
+ font-size: 100%;
+ }
+h1 {
+ font-size: 200%; 
+ color: navy; 
+ text-align: center;
+ }
+h2 {
+ font-size: 150%; 
+ color: navy;  
+ padding-left: 65px;
+ padding-top: 40px;
+ }
+ h3 {
+ font-size: 100%;
+ 
+ padding-left:65px; 
+ padding-right:65px;
+ color: #666;
+ }
+ li {
+  padding-left:100px; 
+ }
+p,td {
+ font-size: 120%;
+ color: #666;
+ 
+ padding-top:65px; 
+ padding-left:65px; 
+ padding-right:65px;
+ }
+ 
+ li{
+  font-size: 120%;
+ color: #666;
+  padding-left:65px;
+ }
+a:link {
+ color: green;
+ text-decoration: underline;
+
+ }
+a:visited {
+ color: gray;
+ }
+a:hover {
+ color: red;
+ text-decoration: none;
+}
+a:active, a:focus {
+ color: red;
+}
+
+img,video {
+  max-width: 50%;
+  height: auto;
+  border-radius: 75px;
+  padding:65px;
+}
+</style>
+
+      </header>
+
+      <section>
+	    <div id="box"></div>
+      </section>
+	 
+
+
+<script type='text/javascript' src='trip.json'></script>
+
+<script>
+
+    async function populate() {
+ 
+      populateHeader(voyage);
+      populateBody(voyage);
+
+    }
+	
+	
+function checkIfImageExists(url, callback) {
+    const img = new Image();
+    img.src = url;
+
+    if (img.complete) {
+      callback(true);
+    } else {
+      img.onload = () => {
+        callback(true);
+      };
+      
+      img.onerror = () => {
+        callback(false);
+      };
+    }
+  }
+
+
+	
+	
+function checkIfVideoExists(url, callback) {
+  const video = document.createElement('video');
+  video.src = url;
+
+  video.addEventListener('loadeddata', function() {
+    callback(true);
+  }, false);
+
+  video.addEventListener('error', function() {
+    callback(false);
+  }, false);
+
+  video.load();
+  
+  }
+
+    
+	
+function populateHeader(obj) {
+      const header = document.querySelector('header');
+      const myH1 = document.createElement('h1');
+      myH1.textContent = obj.name;
+      header.appendChild(myH1);
+
+  /* Resumé du voyage*/		
+  
+      const myPara = document.createElement('p');
+      myPara.textContent = `  ${obj.summary}`;
+      header.appendChild(myPara);
+	  
+  /* Dates et kilométrage*/		
+  
+	  const myPara_info_date_km = document.createElement('h3');
+	  
+		  var jsonDate1 =`${obj.start_date}`;
+		  jsonDate1 = jsonDate1+'000'	;
+          let str_start_date = new Date(parseInt(jsonDate1)).toLocaleDateString("fr");
+		
+		  var jsonDate2 =`${obj.end_date}`;	
+		  jsonDate2 = jsonDate2+'000'	;
+          let str_end_date = new Date(parseInt(jsonDate2)).toLocaleDateString("fr");
+				
+		   var nb_km = `${obj.total_km}` ; 
+		   nb_km =nb_km.substring(0,nb_km.indexOf(".",0));
+
+		  
+		    myPara_info_date_km.textContent = 'Du ' + str_start_date + ' au ' + str_end_date +' - ' + nb_km + ' km '   ;
+		    header.appendChild(myPara_info_date_km);
+   	
+  /* image de couverture*/						
+			const newImage = document.createElement('img');
+			newImage.src =`${obj.cover_photo_thumb_path}`;		
+			header.appendChild(newImage);
+			
+			
+			const inter = document.createElement('br');
+			header.appendChild(inter)
+   			
+   			const steps = obj.all_steps; 
+
+								
+  /* Listing des etapes en haut de page */									
+									
+         	for (const step of steps) {
+				var interligne = document.createElement('p');  
+				interligne.setAttribute("style", "padding:0");
+								
+				var hyperLinkTag = document.createElement("a");
+				hyperLinkTag.setAttribute("href",'#'+step.location_id);
+				hyperLinkTag.setAttribute("style",'padding:100px');
+				hyperLinkTag.appendChild(document.createTextNode(step.name));
+				header.appendChild(hyperLinkTag);
+				header.appendChild(interligne);
+				
+   			}
+			
+   
+    }
+
+  /* les étapes */
+	
+	function populateBody(obj) {
+      const section = document.querySelector('section');
+     
+	  const steps = obj.all_steps;
+
+      for (const step of steps) {
+        const myArticle = document.createElement('article');
+        const myH2 = document.createElement('h2');
+		    myH2.setAttribute("id",step.location_id);
+        const myPara1 = document.createElement('h3');
+        const myPara2 = document.createElement('p');
+        const myPara3 = document.createElement('p');
+		    const myList = document.createElement('ul');
+	  	
+      
+
+        myH2.textContent = step.name;
+		
+		var jsonDate =`${step.start_time}`;
+		jsonDate = jsonDate.replace(".", "")
+
+        let strDate = new Date(parseInt(jsonDate)).toLocaleDateString("fr");
+		myPara1.textContent =strDate ;
+	
+		     
+        myPara2.textContent = `${step.description}`;
+		
+
+        myArticle.appendChild(myH2);
+        myArticle.appendChild(myPara1);
+        myArticle.appendChild(myPara2);
+        myArticle.appendChild(myList);
+
+		 for (let i = 1; i <31; i++) {	    
+		
+						 checkIfImageExists(`${step.slug}_${step.id}/photos/`+i+`.jpg`, (exists) => {
+							  if (exists) {
+								const newImage = document.createElement('img');
+								newImage.src =`${step.slug}_${step.id}/photos/`+i+`.jpg`;
+								myArticle.appendChild(newImage);
+							
+							  } 
+			 });
+		
+				
+		  }
+
+ 	    
+
+		for (let i = 1; i <31; i++) {	    
+
+							 checkIfVideoExists(`${step.slug}_${step.id}/videos/`+i+`.mp4`, (exists) => {
+							 
+							 /* myPara3.textContent = `${step.slug}_${step.id}/videos/`+i+`.mp4`; 
+							 myArticle.appendChild(myPara3);*/
+								  if (exists) {
+								  
+									const newVideo = document.createElement('video');
+									newVideo.src =`${step.slug}_${step.id}/videos/`+i+`.mp4`;
+									newVideo.controls = true;
+									newVideo.muted = false;
+									/*
+									newVideo.height = 240; // in px
+									newVideo.width = 320; // in px
+									*/
+								
+								myArticle.appendChild(newVideo);
+								  }
+							 });
+						
+								
+	     } 
+								
+	
+
+        section.appendChild(myArticle);
+      }
+    }
+
+    populate();
+
+    </script>
+
+
+		
+  </body>
+</html>
