@@ -10,7 +10,7 @@ Les scripts que je viens de réaliser, permettent de reconstituer une page web d
 Méthode
 1) Réaliser une sauvegarde de vos voyages à partir du site Polarsteps.com sur un ordinateur (S'identifier puis dans le menu Account Settings > Download my Data). Décompresser l'archive et faire une copie des fichiers relatifs à votre voyage (présent dans le dossier Trip).
 
-2) Copier mes fichiers rename.ps1 et voyage.html à la racine de votre voyage (là ou sont dejà présents trip.json et locations.json
+2) Copier mes fichiers rename.ps1 et voyage.html à la racine de votre voyage (là ou sont dejà présents trip.json et locations.json)
 
 3) Clic droit sur rename.ps1 > Exécuter avec PowerShell
 Repondre O à la question relative à la sécurité.
