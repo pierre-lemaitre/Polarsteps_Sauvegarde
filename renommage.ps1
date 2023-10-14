@@ -44,5 +44,12 @@ foreach ($qs in $q)
 }
 Write-host "----------------------------------"
 Write-host "Le renommage des fichiers est fini"
-Write-host "----------------------------------"
+Write-host "-------------------------------------------------------------"
+Write-host "Ajout maintenant du mot voyage au début du fichier trip.json"
+Write-host "-------------------------------------------------------------"
+pause
+(get-content trip.json) | %{$_  -Replace "^.","voyage={"} | set-content trip.json
+Write-host "---------------------------------------------------"
+Write-host "Le fichier trip.json a été modifié. Terminé !"
+Write-host "---------------------------------------------------"
 pause
