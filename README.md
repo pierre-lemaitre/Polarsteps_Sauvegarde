@@ -22,4 +22,4 @@ Votre voyage peut maintenant etre copié sur une clé USB et visualisé sans con
 Rq 1 : Il est possible comme toute page web de générer un fichier pdf (Dans Chrome, fichier imprimer > Destination > Enregistrer Format PDF
 
 Rq 2 : Il est possible d'obtenir la trace gpx de votre voyage à partir du fichier locations.json. Cela nécessite l'installation d'un serveur javascript node.js
-Envoyez moi votre fichier locations.json et je vous renvoie le fichier gpx correspondant. 
+Voir ici https://github.com/isklikas/polarsteps-gpx 
