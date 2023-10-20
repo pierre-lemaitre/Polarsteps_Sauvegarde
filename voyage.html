@@ -191,7 +191,13 @@ function populateHeader(obj) {
 				var hyperLinkTag = document.createElement("a");
 				hyperLinkTag.setAttribute("href",'#'+step.location_id);
 				hyperLinkTag.setAttribute("style",'padding:100px');
-				hyperLinkTag.appendChild(document.createTextNode(step.name));
+
+        if (step.name === null){
+      		hyperLinkTag.appendChild(document.createTextNode(step.location.name));
+        } else {
+         hyperLinkTag.appendChild(document.createTextNode(step.name));
+        }
+		
 				header.appendChild(hyperLinkTag);
 				header.appendChild(interligne);
 				
@@ -216,15 +222,19 @@ function populateHeader(obj) {
         const myPara3 = document.createElement('p');
 		    const myList = document.createElement('ul');
 	  	
-      
-
+      if (step.name === null){
+        myH2.textContent = step.location.name;
+      } else {
         myH2.textContent = step.name;
+      }
+
+
 		
 		var jsonDate =`${step.start_time}`;
 		jsonDate = jsonDate.replace(".", "")
 
         let strDate = new Date(parseInt(jsonDate)).toLocaleDateString("fr");
-		myPara1.textContent =strDate ;
+		    myPara1.textContent =strDate ;
 	
 		     
         myPara2.textContent = `${step.description}`;
